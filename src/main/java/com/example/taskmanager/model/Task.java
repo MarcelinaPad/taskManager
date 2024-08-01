@@ -1,10 +1,8 @@
 package com.example.taskmanager.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,7 +13,8 @@ public class Task {
     private String title;
     private String description;
     private LocalDateTime createdAt;
-    private String status;
+    @Enumerated(EnumType.ORDINAL)
+    private TaskStatus status;
 
 
    public Long getId() {
@@ -49,11 +48,11 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 }
