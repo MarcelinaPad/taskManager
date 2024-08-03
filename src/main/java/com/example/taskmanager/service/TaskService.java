@@ -2,6 +2,7 @@ package com.example.taskmanager.service;
 
 
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.model.TaskStatus;
 import com.example.taskmanager.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,9 @@ public class TaskService {
 
     public void deletedById(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    public List<Task> findTasksInProgress(){
+        return taskRepository.findByStatus(TaskStatus.W_TRAKCIE);
     }
 }

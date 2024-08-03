@@ -49,6 +49,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio</artifactId>
+			<version>10.4.1</version>
+		</dependency>
+			<dependency>
+				<groupId>com.mailjet</groupId>
+				<artifactId>mailjet-client</artifactId>
+				<version>5.2.5</version>
+			</dependency>
+
 	</dependencies>
 
 	<build>
