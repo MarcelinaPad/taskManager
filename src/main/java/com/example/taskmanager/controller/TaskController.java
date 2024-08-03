@@ -41,6 +41,9 @@ public class TaskController {
                     task.setTitle(updatedTask.getTitle());
                     task.setDescription(updatedTask.getDescription());
                     task.setStatus(updatedTask.getStatus());
+                    task.setPriority(updatedTask.getPriority());
+                    task.setCategory(updatedTask.getCategory());
+                    task.setDueDate(updatedTask.getDueDate());
                     Task savedTask = taskService.save(task);
                     return ResponseEntity.ok(savedTask);
 

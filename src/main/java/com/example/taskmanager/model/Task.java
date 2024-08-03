@@ -1,9 +1,11 @@
 package com.example.taskmanager.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.twilio.Twilio;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,9 +15,17 @@ public class Task {
     private Long id;
     private String title;
     private String description;
+
     private LocalDateTime createdAt;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
+    private String category;
+    private String priority; //low, medium, high
+
+    private LocalDate dueDate;
+
+
+
 
 
    public Long getId() {
@@ -59,5 +69,27 @@ public class Task {
 
     }
 
+    public String getCategory() {
+        return category;
+    }
 
+    public String getPriority() {
+        return priority;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
 }
