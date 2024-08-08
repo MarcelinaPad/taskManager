@@ -24,6 +24,10 @@ public class Task {
 
     private LocalDate dueDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
 
 
@@ -91,5 +95,13 @@ public class Task {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
