@@ -1,19 +1,12 @@
 package com.example.taskmanager.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserRegistrationDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotBlank
-    @Column(unique = true)
     private String username;
 
     @NotBlank
@@ -23,19 +16,6 @@ public class User {
     @Email
     private String email;
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -44,8 +24,8 @@ public class User {
         return password;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getEmail() {
+        return email;
     }
 
     public void setUsername(String username) {
@@ -54,5 +34,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

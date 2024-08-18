@@ -1,6 +1,7 @@
 package com.example.taskmanager.controller;
 
 import com.example.taskmanager.model.User;
+import com.example.taskmanager.model.UserRegistrationDto;
 import com.example.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,11 @@ public class RegistrationController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDto userRegistrationDto) {
+        User user = new User();
+        user.setUsername(userRegistrationDto.getUsername());
+        user.setPassword(userRegistrationDto.getPassword());
+        user.setEmail(userRegistrationDto.getEmail());
         userService.save(user);
         return ResponseEntity.ok("User registered succesfully");
     }
