@@ -6,6 +6,7 @@ import com.example.taskmanager.model.TaskStatus;
 import com.example.taskmanager.model.User;
 import com.example.taskmanager.repository.TaskRepository;
 import com.example.taskmanager.workerEmail.EmailWorker;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class TaskService {
         return taskRepository.findByIdAndUser(id, user);
     }
 
+    @Transactional
     public Task save( Task task) {
         Task savedTask = taskRepository.save(task);
 

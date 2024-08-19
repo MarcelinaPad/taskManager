@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <!-- Dodajemy Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">List of Tasks</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.status}"></td>
+            <td th:text="${task.dueDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="/tasks/add">Add New Task</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
