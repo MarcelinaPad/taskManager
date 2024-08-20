@@ -22,6 +22,12 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/register").permitAll()
                                 .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/tasks", true)
+                        .failureUrl("/login?error=true")
 
                 )
 
