@@ -22,9 +22,17 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/register").permitAll()
                                 .anyRequest().authenticated()
+
                 )
+
                 .csrf(csrf -> csrf.disable())
-                .httpBasic(withDefaults());
+                .httpBasic(withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                );
 
         return http.build();
     }

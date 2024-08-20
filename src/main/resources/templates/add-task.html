@@ -7,6 +7,19 @@
 </head>
 <body>
 <div class="container">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Task Manager</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <h1 class="my-4">Add New Task</h1>
     <form action="#" th:action="@{/tasks}" th:object="${task}" method="post">
         <div class="form-group">

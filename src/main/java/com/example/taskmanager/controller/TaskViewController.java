@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
+import java.util.List;
+
 @Controller
 public class TaskViewController {
     @Autowired
@@ -26,6 +29,14 @@ public class TaskViewController {
         model.addAttribute("task", new Task());
         return "add-task";
 
+    }
+    @GetMapping("/tasks")
+    public String showTasks(Model model, Principal principal) {
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+        List<Task> tasks = taskService.findByUser(user);
+        model.addAttribute("tasks", tasks);
+        return "tasks";
     }
 
     @PostMapping("/tasks")
