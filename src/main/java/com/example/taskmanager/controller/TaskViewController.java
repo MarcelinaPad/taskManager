@@ -36,6 +36,15 @@ public class TaskViewController {
         User user = userService.findByUsername(username);
         List<Task> tasks = taskService.findByUser(user);
         model.addAttribute("tasks", tasks);
+
+
+        if ("wolek".equals(username)) {
+            model.addAttribute("showMessage", true);
+            model.addAttribute("message", "Daj żyć BABOOOO");
+            model.addAttribute("imagePath", "/images/your_image.jpg");
+        } else {
+            model.addAttribute("showMessage", false);
+        }
         return "tasks";
     }
 
