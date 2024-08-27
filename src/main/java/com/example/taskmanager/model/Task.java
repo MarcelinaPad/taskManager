@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Task {
@@ -29,10 +30,26 @@ public class Task {
     private User user;
 
 
+    @ManyToMany
+    @JoinTable(
+            name = "task_collaborators",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns  = @JoinColumn(name = "user_id")
+    )
+
+    private Set<User> collaborators;
 
 
+    public Set<User> getCollaborators() {
+        return collaborators;
+    }
 
-   public Long getId() {
+    public void setCollaborators(Set<User> collaborators) {
+
+        this.collaborators = collaborators;
+    }
+
+    public Long getId() {
    return id;
    }
     public void setId(Long id) {
@@ -105,5 +122,5 @@ public class Task {
         this.user = user;
     }
 
-    //hjgsdjgsdjhsgdjhsgdjhsgdjhsdgjhsgd
+
 }

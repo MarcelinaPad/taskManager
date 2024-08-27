@@ -4,10 +4,12 @@ import com.example.taskmanager.model.Task;
 import com.example.taskmanager.model.User;
 import com.example.taskmanager.service.TaskService;
 import com.example.taskmanager.service.UserService;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -75,5 +77,34 @@ public class TaskController {
         }
     }
 
+    @PostMapping("/{taskId}/assign/{username}")
+    public ResponseEntity<Task> assignTaskToUser(@PathVariable Long taskId, @PathVariable String username) {
+        try {
+            Task task = taskService.assignTaskToUser(taskId, username);
+            return ResponseEntity.ok(task);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PostMapping("/{taskId}/collaborators/{username}")
+    public ResponseEntity<Task> addCollaboratorToTask(@PathVariable Long taskId, @PathVariable String username) {
+        try {
+            Task task = taskService.addCollaboratorToTask(taskId, username);
+            return ResponseEntity.ok(task);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @DeleteMapping("/{taskId}/collaborators/{username}")
+    public ResponseEntity<Task> removeCollaboratorFromTask(@PathVariable Long taskId, @PathVariable String username) {
+        try {
+            Task task = taskService.removeCollaboratorFromTask(taskId, username);
+            return ResponseEntity.ok(task);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
 }

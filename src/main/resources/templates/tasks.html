@@ -25,6 +25,35 @@
             <td th:text="${task.description}"></td>
             <td th:text="${task.status}"></td>
             <td th:text="${task.dueDate}"></td>
+
+            <td>
+
+                <form th:action="@{/api/tasks/{taskId}/assign/{username}(taskId=${task.id}, username=${user.username})}"
+                      method="post" style="display: inline;">
+                    <select name="username">
+                        <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Assign</button>
+                </form>
+
+
+                <form th:action="@{/api/tasks/{taskId}/collaborators/{username}(taskId=${task.id}, username=${user.username})}"
+                      method="post" style="display: inline;">
+                    <select name="username">
+                        <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Add Collaborator</button>
+                </form>
+
+
+                <form th:action="@{/api/tasks/{taskId}/collaborators/{username}(taskId=${task.id}, username=${user.username})}"
+                      method="post" th:method="delete" style="display: inline;">
+                    <select name="username">
+                        <option th:each="user : ${task.collaborators}" th:value="${user.username}" th:text="${user.username}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-danger">Remove Collaborator</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

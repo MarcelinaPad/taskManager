@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +62,55 @@ public class TaskService {
     public List<Task> findTasksByUserEmail(String email) {
         User user = userService.findByEmail(email);
         return taskRepository.findByUser(user);
+    }
+
+
+    @Transactional
+    public Task assignTaskToUser(Long taskId, String username) {
+        Optional<Task> taskOpt = taskRepository.findById(taskId);
+        User user = userService.findByUsername(username);
+
+
+        if (taskOpt.isPresent() && user != null) {
+            Task task = taskOpt.get();
+            task.setUser(user);
+            return taskRepository.save(task);
+        }
+        throw new RuntimeException("Task or User not found");
+    }
+
+    @Transactional
+    public Task addCollaboratorToTask(Long taskId, String username) {
+        Optional<Task> taskOpt = taskRepository.findById(taskId);
+        User user = userService.findByUsername(username);
+
+        if (taskOpt.isPresent() && user != null) {
+            Task task = taskOpt.get();
+            if (task.getCollaborators() == null) {
+                task.setCollaborators(new HashSet<>());
+            }
+
+            task.getCollaborators().add(user);
+            return taskRepository.save(task);
+        }
+
+        throw new RuntimeException("Task or User not found");
+    }
+
+
+
+    @Transactional
+    public Task removeCollaboratorFromTask(Long taskId, String username) {
+        Optional<Task> taskOpt = taskRepository.findById(taskId);
+        User user = userService.findByUsername(username);
+
+        if (taskOpt.isPresent() && user != null) {
+            Task task = taskOpt.get();
+            if (task.getCollaborators() != null) {
+                task.getCollaborators().remove(user);
+            }
+            return taskRepository.save(task);
+        }
+        throw new RuntimeException("Task or User not found");
     }
 }

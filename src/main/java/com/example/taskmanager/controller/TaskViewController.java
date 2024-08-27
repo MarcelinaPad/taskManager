@@ -5,13 +5,12 @@ import com.example.taskmanager.model.User;
 import com.example.taskmanager.service.TaskService;
 import com.example.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -32,10 +31,11 @@ public class TaskViewController {
     }
     @GetMapping("/tasks")
     public String showTasks(Model model, Principal principal) {
-        String username = principal.getName();
+        String username = principal.getName ();
         User user = userService.findByUsername(username);
         List<Task> tasks = taskService.findByUser(user);
         model.addAttribute("tasks", tasks);
+        model.addAttribute("user", user);
 
 
         if ("wolek".equals(username)) {
@@ -57,4 +57,5 @@ public class TaskViewController {
         taskService.save(task);
         return "redirect:/tasks";
     }
+
 }
