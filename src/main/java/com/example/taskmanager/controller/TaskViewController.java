@@ -34,7 +34,9 @@ public class TaskViewController {
         String username = principal.getName ();
         User user = userService.findByUsername(username);
         List<Task> tasks = taskService.findByUser(user);
+        List<User> allUsers = userService.findAllUsers();
         model.addAttribute("tasks", tasks);
+        model.addAttribute("allUsers", allUsers);
         model.addAttribute("user", user);
 
 
@@ -55,6 +57,24 @@ public class TaskViewController {
         User user = userService.findByUsername(username);
         task.setUser(user);
         taskService.save(task);
+        return "redirect:/tasks";
+    }
+
+    @PostMapping("/tasks/assign")
+    public String assignTask(@RequestParam Long taskId, @RequestParam String username, Model model) {
+        taskService.assignTaskToUser(taskId, username);
+        return "redirect:/tasks";
+    }
+
+    @PostMapping("/tasks/addCollaborator")
+    public String addCollaborator(@RequestParam Long taskId, @RequestParam String username, Model model) {
+        taskService.addCollaboratorToTask(taskId, username);
+        return "redirect:/tasks";
+    }
+
+    @PostMapping("/tasks/removeCollaborator")
+    public String removeCollaborator(@RequestParam Long taskId, @RequestParam String username, Model model) {
+        taskService.removeCollaboratorFromTask(taskId, username);
         return "redirect:/tasks";
     }
 

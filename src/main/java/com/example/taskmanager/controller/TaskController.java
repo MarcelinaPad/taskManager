@@ -1,11 +1,13 @@
 package com.example.taskmanager.controller;
 
+import org.springframework.ui.Model;
 import com.example.taskmanager.model.Task;
 import com.example.taskmanager.model.User;
 import com.example.taskmanager.service.TaskService;
 import com.example.taskmanager.service.UserService;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,28 +27,30 @@ public class TaskController {
     private UserService userService;
 
     @GetMapping
-    public List<Task> getAllTask() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(authentication.getName());
-        return taskService.findByUser(user);
-
+    public ResponseEntity<List<Task>> getAllTasks() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+        List<Task> tasks = taskService.findByUser(user);
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(authentication.getName());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
         Optional<Task> task = taskService.findByIdAndUser(id, user);
         return task.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(authentication.getName());
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
         task.setUser(user);
         task.setCreatedAt(LocalDateTime.now());
-        return taskService.save(task);
+        Task savedTask = taskService.save(task);
+        return ResponseEntity.ok(savedTask);
     }
 
     @PutMapping("/{id}")
@@ -61,14 +65,14 @@ public class TaskController {
                     task.setDueDate(updatedTask.getDueDate());
                     Task savedTask = taskService.save(task);
                     return ResponseEntity.ok(savedTask);
-
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(authentication.getName());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
         if (taskService.findByIdAndUser(id, user).isPresent()) {
             taskService.deletedById(id);
             return ResponseEntity.ok().build();
@@ -77,34 +81,9 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/{taskId}/assign/{username}")
-    public ResponseEntity<Task> assignTaskToUser(@PathVariable Long taskId, @PathVariable String username) {
-        try {
-            Task task = taskService.assignTaskToUser(taskId, username);
-            return ResponseEntity.ok(task);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    @GetMapping("/allUsers")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.findAllUsers();
+        return ResponseEntity.ok(users);
     }
-
-    @PostMapping("/{taskId}/collaborators/{username}")
-    public ResponseEntity<Task> addCollaboratorToTask(@PathVariable Long taskId, @PathVariable String username) {
-        try {
-            Task task = taskService.addCollaboratorToTask(taskId, username);
-            return ResponseEntity.ok(task);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-    @DeleteMapping("/{taskId}/collaborators/{username}")
-    public ResponseEntity<Task> removeCollaboratorFromTask(@PathVariable Long taskId, @PathVariable String username) {
-        try {
-            Task task = taskService.removeCollaboratorFromTask(taskId, username);
-            return ResponseEntity.ok(task);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
 }
